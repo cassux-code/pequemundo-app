@@ -1,0 +1,130 @@
+# Módulo 2 — Vocabulario y Lectoescritura Interactiva
+
+Módulo frontend (Angular 22, standalone components) de **PequeMundo Aprende**, para niños de 3 a 6 años. Introduce el reconocimiento de letras, sonidos y palabras mediante actividades visuales y auditivas.
+
+## Cómo ejecutar
+
+```bash
+npm install     # ya incluye bootstrap como dependencia de este módulo
+ng serve        # http://localhost:4200
+```
+
+Desde el dashboard principal, botón **"Módulo: Vocabulario" → ¡A Jugar!**.
+
+Pruebas unitarias del módulo (lógica, no UI):
+
+```bash
+ng test --include="src/app/modules/vocabularios/**/*.spec.ts"
+```
+
+> Nota: `ng test` sin filtro falla por un `app.spec.ts` preexistente y ajeno a este módulo, que importa `./app` (no existe; el componente real es `AppComponent` en `app.component.ts`). No se tocó ese archivo porque no pertenece al Módulo 2.
+
+## Estructura
+
+```
+vocabularios/
+  vocabulario.component.*      Shell: tabs, tokens de diseño, mascota, panel docente
+  types/                       Interfaces (Letra, Palabra, Intento, etc.)
+  services/                    contenidosService, intentosService, progressEmitter
+  data/                        Catálogo mock (27 letras, 60 palabras)
+  shared/                      Componentes reutilizables (botón, flashcard, feedback, mascota)
+  abecedario/                  Abecedario interactivo
+  flashcards/                  Flashcards 3D por categoría
+  juegos/                      3 minijuegos de fonemas + contenedor de pestañas
+  panel-docente/                CRUD de palabras
+```
+
+## Capa de datos (sin backend)
+
+`ContenidosService` e `IntentosService` son servicios abstractos con métodos async. Hoy leen de `data/*.ts` (mock) + `localStorage` (overrides docentes e intentos). Para conectar un backend real, **solo se cambia el cuerpo de estos dos servicios** — los componentes no cambian.
+
+Endpoints previstos (comentados en el código, junto a cada método):
+
+| Método del servicio | Endpoint previsto |
+|---|---|
+| `getLetras()` | `GET /api/letras` |
+| `getPalabras({categoria, nivel})` | `GET /api/palabras?categoria=&nivel=` |
+| `crearPalabra()` | `POST /api/palabras` |
+| `actualizarPalabra()` | `PUT /api/palabras/:id` |
+| `eliminarPalabra()` | `DELETE /api/palabras/:id` |
+| `registrarIntento()` | `POST /api/intentos` |
+
+## Puente con el Módulo 5 (Progreso)
+
+`ProgressEmitterService` es un stub desacoplado (RxJS `Subject`) que emite:
+- `actividad_completada` (actividad, nivel)
+- `acierto` (actividad, itemId)
+- `tiempo_sesion` (actividad, tiempoMs)
+
+Cuando el Módulo 5 exista, basta con hacer que este servicio delegue en su bus real — ningún componente de Vocabulario necesita cambiar.
+
+## Sesión del niño activo
+
+El proyecto aún no conecta `AuthService` al flujo de login (`AppComponent` mantiene su propio `isLoggedIn` local, desacoplado del servicio). Por eso los intentos se registran con un `ninoId` fijo (`'ninoActivo'`) como marcador de posición. **Pendiente de otros integrantes**: conectar un id de niño real cuando la sesión esté resuelta a nivel de proyecto.
+
+## Panel docente
+
+Está **desacoplado de un sistema de roles real**, porque el proyecto no expone todavía `rolUsuario` de forma funcional (existe en `AuthService` pero no se usa en el login actual). Se accede con un botón "👩‍🏫 Panel Docente" visible para cualquier usuario logueado. **Pendiente**: proteger este acceso con el rol real cuando el módulo de autenticación lo resuelva.
+
+## Bootstrap
+
+Se instaló `bootstrap` (solo CSS, sin JS/Popper) y se añadió a `angular.json → styles` (una línea, antes de `src/styles.css` para que los estilos propios del proyecto puedan seguir sobrescribiéndolo). Se usa en el panel docente (`card`, `table`, `form-control`, `btn`) y en controles del shell del módulo.
+
+**Aviso de riesgo:** al ser una hoja de estilos global, Bootstrap aplica un reset de tipografía/espaciado a toda la aplicación, no solo a este módulo. El build no se rompió y no se tocó ningún archivo de otros módulos, pero se recomienda una verificación visual rápida del login, header, footer y Matemáticas para confirmar que no haya cambios de aspecto no deseados.
+
+## Juegos de fonemas implementados
+
+3 de los 4 descritos en la especificación:
+1. Encuentra la letra inicial.
+2. Relaciona imagen con palabra.
+3. Completa la palabra con la letra faltante.
+
+**Pendiente**: "Arrastra y suelta sílabas" (Drag & Drop + Pointer Events) no se implementó en esta entrega por alcance; queda como siguiente paso dentro de `juegos/`, reutilizando los mismos servicios y componentes compartidos.
+
+## Dificultad progresiva y repetición espaciada
+
+- 3 niveles por juego (más opciones y distractores a medida que sube el nivel).
+- Sistema tipo Leitner en `IntentosService`: cada palabra/letra tiene una "caja" (1 a 3); un fallo la regresa a la caja 1 (reaparece más seguido), un acierto la sube de caja (reaparece menos).
+
+## Cumplimiento de Heurísticas de Nielsen
+
+| # | Heurística | Dónde se aplica |
+|---|---|---|
+| 1 | Visibilidad del estado | Barra de progreso con estrellas en cada juego; `aria-live` en feedback; estado de pestaña/nivel activo resaltado |
+| 2 | Coincidencia con el mundo real | Mascota guía (Tucán), flashcards como tarjetas físicas, iconos + voz en cada palabra |
+| 3 | Control y libertad | Botón "🏠 Menú Principal" siempre visible en el shell; se puede cambiar de nivel o reiniciar sin penalización |
+| 4 | Consistencia | `boton-grande`, `feedback-mensaje` y `mascota-guia` reutilizados en abecedario, flashcards y los 3 juegos |
+| 5 | Prevención de errores | Botones ≥48px (64px en juegos), opciones separadas, confirmación explícita para eliminar palabras en el panel docente |
+| 6 | Reconocimiento antes que recuerdo | Todo visible con imagen; sin menús ocultos; botón "🔊 Escuchar de nuevo" en mascota y detalle de letra |
+| 7 | Flexibilidad y eficiencia | Selector de velocidad de voz, toggle de animaciones, navegación por teclado/mouse/táctil, atajo a panel docente |
+| 8 | Diseño minimalista | Un objetivo por pantalla en cada juego (una pregunta, una imagen, una acción) |
+| 9 | Recuperación de errores | Mensajes "¡Casi! Inténtalo otra vez" (nunca negativos), pista visual tras 2 fallos |
+| 10 | Ayuda y documentación | Mascota explica cada sección la primera vez (`localStorage` evita repetirlo); aviso claro en el panel docente |
+
+## Cumplimiento de Principios Gestalt
+
+| Principio | Dónde se aplica |
+|---|---|
+| Proximidad | Imagen + palabra + botón de audio agrupados en flashcards y tarjetas de juego |
+| Similitud | Todas las letras del abecedario y opciones de respuesta comparten forma/tamaño/color base |
+| Figura-fondo | Imagen/letra objetivo grande sobre fondo suave (`--vocab-color-superficie`) |
+| Cierre y continuidad | Barra de progreso continua; palabra enmascarada con guion bajo en "Completa la palabra" |
+| Región común | Tarjetas y contenedores con bordes redondeados (`--vocab-radio`) delimitando cada grupo |
+| Simetría/equilibrio | Layouts centrados con `max-width` y `margin: auto` en tarjetas de juego |
+| Destino común / movimiento | Volteo 3D de flashcards, transición de progreso |
+| Jerarquía visual | Un punto focal por pantalla (pregunta → imagen → opciones → feedback) |
+
+## Archivos ajenos modificados (mínimos, con comentario en el propio archivo)
+
+- `src/app/app.component.ts`: import de `VocabularioComponent`, entrada en `imports`, método `irAVocabulario()`.
+- `src/app/app.component.html`: `(click)` en el botón de Vocabulario + bloque `*ngIf="moduloActual === 'vocabulario'"`.
+- `angular.json`: una línea en `styles` para Bootstrap (JSON no admite comentarios; documentado aquí y en este README).
+
+No se modificó ningún archivo de `matematicas/`, `arte/`, `reporte/`, `components/` ni `services/auth.service.ts`.
+
+## Pendientes para otros integrantes
+
+1. Conectar un `ninoId` real cuando el proyecto resuelva la sesión del niño/usuario.
+2. Exponer un rol real desde `AuthService` para proteger el Panel Docente.
+3. Implementar el Módulo 5 (Progreso) y suscribirse a `ProgressEmitterService.eventos`.
+4. (Opcional) Juego de arrastrar sílabas (Drag & Drop + Pointer Events).

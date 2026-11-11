@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.docente-preview {
+  font-size: 2.5rem;
+}
+
+.docente-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.docente-confirm-card {
+  max-width: 400px;
+  width: 100%;
+  border-radius: var(--vocab-radio, 16px);
+}

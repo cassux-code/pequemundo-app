@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './guards/auth.guard';
 import { InicioComponent } from './modules/inicio/inicio.component';
-import { VocabularioComponent } from './modules/vocabulario/vocabulario.component';
+import { VocabularioComponent } from './modules/vocabularios/vocabulario.component';
 import { MatematicasComponent } from './modules/matematicas/matematicas.component';
 import { ArteSonidoComponent } from './modules/arte-sonido/arte-sonido.component';
 import { LogrosReportesComponent } from './modules/logros-reportes/logros-reportes.component';
