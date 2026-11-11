@@ -1,0 +1,12 @@
+<!-- aria-live: Nielsen #1 (visibilidad) y #9 (recuperación de errores sin castigo) -->
+<p
+  *ngIf="mensaje"
+  class="feedback-msg"
+  [class.feedback-exito]="tipo === 'exito'"
+  [class.feedback-error]="tipo === 'error'"
+  [class.feedback-pista]="tipo === 'pista'"
+  role="status"
+  aria-live="polite"
+>
+  <span aria-hidden="true">{{ icono }}</span> {{ mensaje }}
+</p>

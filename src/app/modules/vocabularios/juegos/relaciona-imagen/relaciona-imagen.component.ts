@@ -1,6 +1,7 @@
 <div class="juego-container">
   <app-mascota-guia [mensaje]="mascotaMensaje" (escuchar)="actual && reiniciar()"></app-mascota-guia>
 
+  <!-- Flexibilidad y eficiencia (Nielsen #7): selector de nivel siempre visible -->
   <div class="juego-niveles" role="group" aria-label="Elegir nivel de dificultad">
     <button
       *ngFor="let n of niveles"
@@ -13,6 +14,7 @@
     </button>
   </div>
 
+  <!-- Visibilidad del estado (Nielsen #1): barra con estrellas, no solo números -->
   <div class="juego-progreso" aria-label="Progreso">
     <span class="juego-progreso-texto">{{ puntaje }} / 10 ⭐</span>
     <div class="juego-progreso-barra">
@@ -21,17 +23,18 @@
   </div>
 
   <div *ngIf="!completado && actual" class="juego-tarjeta">
-    <p class="juego-pregunta">¿Qué palabra corresponde a esta imagen?</p>
+    <p class="juego-pregunta">¿Con qué letra empieza?</p>
     <span class="juego-imagen" aria-hidden="true">{{ actual.recurso.imagen }}</span>
 
     <div class="juego-opciones">
       <button
         *ngFor="let opcion of opciones"
         type="button"
-        class="juego-opcion-btn juego-opcion-palabra"
+        class="juego-opcion-btn"
+        [attr.aria-label]="'Letra ' + opcion"
         (click)="elegir(opcion)"
       >
-        {{ opcion.texto }}
+        {{ opcion.toUpperCase() }}
       </button>
     </div>
 
