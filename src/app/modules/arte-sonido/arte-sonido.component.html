@@ -1,0 +1,58 @@
+<section class="arte-container">
+  <a routerLink="/inicio" class="volver">← Volver al inicio</a>
+  <h2>🎨 Arte, Dibujo y Sonidos</h2>
+
+  <!-- LIENZO -->
+  <div class="panel">
+    <h3>Lienzo de dibujo mágico</h3>
+
+    <div class="herramientas">
+      <label>Color
+        <input type="color" [value]="color()" (input)="cambiarColor($event)">
+      </label>
+
+      <label>Grosor: {{ grosor() }}px
+        <input type="range" min="1" max="40" [value]="grosor()" (input)="cambiarGrosor($event)">
+      </label>
+
+      <button type="button" [class.activo]="borrador()" (click)="borrador.set(!borrador())">🧽 Borrador</button>
+      <button type="button" (click)="limpiar()">🗑️ Limpiar</button>
+      <button type="button" class="primario" (click)="descargar()">⬇️ Descargar</button>
+    </div>
+
+    <canvas #lienzo width="900" height="500"
+            (pointerdown)="empezar($event)"
+            (pointermove)="mover($event)"
+            (pointerup)="terminar()"
+            (pointerleave)="terminar()"></canvas>
+  </div>
+
+  <!-- XILÓFONO -->
+  <div class="panel">
+    <h3>Xilófono mágico</h3>
+    <div class="xilofono">
+      @for (n of notas; track $index) {
+        <button type="button" class="tecla"
+                [class.sonando]="notaActiva() === $index"
+                [style.background]="n.color"
+                [style.height.px]="190 - $index * 8"
+                (click)="tocarNota($index)">
+          {{ n.nombre }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- EFECTOS -->
+  <div class="panel">
+    <h3>Sonidos de la naturaleza y animales</h3>
+    <div class="efectos">
+      @for (ef of efectos; track ef.nombre) {
+        <button type="button" class="efecto" (click)="reproducirEfecto(ef)">
+          <span class="ico">{{ ef.icono }}</span>
+          {{ ef.nombre }}
+        </button>
+      }
+    </div>
+  </div>
+</section>

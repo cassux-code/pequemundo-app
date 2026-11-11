@@ -1,0 +1,17 @@
+<header class="main-header">
+  <div class="logo">
+    <span class="logo-text">PequeMundo <small>Aprende</small></span>
+  </div>
+  <nav class="nav-links">
+    <ng-container *ngIf="!isLoggedIn; else loggedInNav">
+      <a href="#" class="active">Iniciar Sesión</a>
+      <a href="#">Acerca de</a>
+    </ng-container>
+    <ng-template #loggedInNav>
+      <div class="user-session-info">
+        <span class="welcome-user">👤 <strong>{{ nombreUsuario }}</strong> ({{ rolUsuario }})</span>
+        <button class="btn-logout" (click)="onLogout()">Cerrar Sesión</button>
+      </div>
+    </ng-template>
+  </nav>
+</header>

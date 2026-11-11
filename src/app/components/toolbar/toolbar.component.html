@@ -1,0 +1,12 @@
+<nav class="navbar">
+  <a class="logo" routerLink="/inicio">🎨 Pequemundo</a>
+
+  <div class="nav-user">
+    @if (auth.autenticado()) {
+      <span>Bienvenido, <strong>{{ auth.nombreUsuario() }}</strong></span>
+      <button type="button" (click)="cerrarSesion()" class="btn-logout">Cerrar Sesión</button>
+    } @else {
+      <span>Estado: <em>No autenticado</em></span>
+    }
+  </div>
+</nav>

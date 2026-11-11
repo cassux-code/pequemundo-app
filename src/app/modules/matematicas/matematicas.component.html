@@ -1,0 +1,117 @@
+<div class="math-module-container space-y-6">
+  <button type="button" (click)="onVolverMenu()" class="volver">← Volver al inicio</button>
+  
+  <!-- BARRA SUPERIOR -->
+  <div class="flex items-center justify-between border-b-2 border-slate-200 pb-4">
+    <div class="flex items-center space-x-3">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-800">Módulo: Lógica y Matemáticas</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- PESTAÑAS -->
+  <div class="flex flex-wrap gap-2">
+    <button (click)="switchTab('sums')" [class.active-tab]="activeTab === 'sums'" class="math-tab-btn">
+      Sumas con Manzanas ({{ sumsScore }}/10)
+    </button>
+    <button (click)="switchTab('count')" [class.active-tab]="activeTab === 'count'" class="math-tab-btn">
+      Conteo de Estrellas ({{ countScore }}/10)
+    </button>
+    <button (click)="switchTab('shapes')" [class.active-tab]="activeTab === 'shapes'" class="math-tab-btn">
+      Formas Geométricas ({{ shapesScore }}/10)
+    </button>
+  </div>
+
+  <!-- PESTAÑA 1: SUMAS -->
+  <div *ngIf="activeTab === 'sums'" class="math-card">
+    <div class="flex justify-center items-center max-w-xl mx-auto mb-6">
+      <div class="w-48 bg-slate-200 h-4 rounded-full overflow-hidden border border-slate-400 shadow-inner">
+        <div class="bg-emerald-500 h-full transition-all duration-300" [style.width.%]="(sumsScore / 10) * 100"></div>
+      </div>
+    </div>
+
+    <div *ngIf="!sumsCompleted" class="text-center">
+      <div class="sum-box">
+        <div class="flex flex-wrap max-w-[120px] justify-center gap-1">
+          <span *ngFor="let a of applesGroupA">🍎</span>
+        </div>
+        <span class="text-amber-500 text-4xl">+</span>
+        <div class="flex flex-wrap max-w-[120px] justify-center gap-1">
+          <span *ngFor="let b of applesGroupB">🍎</span>
+        </div>
+        <span class="text-slate-400 text-4xl">=</span>
+        <span class="text-5xl text-emerald-500 font-extrabold">?</span>
+      </div>
+
+      <div class="flex justify-center gap-4 max-w-md mx-auto">
+        <button *ngFor="let num of sumChoices" (click)="checkSum(num)" class="btn-sum-choice">
+          {{ num }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="sumsCompleted" class="success-screen">
+      <div class="text-6xl mb-2">🏆</div>
+      <h3 class="text-2xl font-bold text-emerald-800">¡Reto de Sumas Superado!</h3>
+      <button (click)="reiniciarSeccion('sums')" class="btn-restart">Jugar de Nuevo 🔄</button>
+    </div>
+
+    <p *ngIf="sumFeedback" class="font-bold text-emerald-600 text-base mt-4 text-center">{{ sumFeedback }}</p>
+  </div>
+
+  <!-- PESTAÑA 2: CONTEO -->
+  <div *ngIf="activeTab === 'count'" class="math-card">
+    <div class="flex justify-between items-center max-w-xl mx-auto mb-4">
+      <div class="w-32 bg-slate-200 h-4 rounded-full overflow-hidden border border-slate-400">
+        <div class="bg-amber-500 h-full transition-all duration-300" [style.width.%]="(countScore / 10) * 100"></div>
+      </div>
+    </div>
+
+    <div *ngIf="!countCompleted" class="text-center">
+      <div class="counting-box">
+        <span *ngFor="let s of starsArray" class="text-4xl animate-bounce">⭐</span>
+      </div>
+      <div class="flex justify-center gap-4 max-w-md mx-auto">
+        <button *ngFor="let num of countingChoices" (click)="checkCounting(num)" class="btn-choice">
+          {{ num }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="countCompleted" class="success-screen">
+      <div class="text-6xl mb-2">🏆</div>
+      <h3 class="text-2xl font-bold text-emerald-800">¡Reto de Conteo Superado!</h3>
+      <button (click)="reiniciarSeccion('count')" class="btn-restart">Jugar de Nuevo 🔄</button>
+    </div>
+
+    <p *ngIf="countingFeedback" class="font-bold text-emerald-600 text-base mt-4 text-center">{{ countingFeedback }}</p>
+  </div>
+
+  <!-- PESTAÑA 3: FORMAS -->
+  <div *ngIf="activeTab === 'shapes'" class="math-card bg-amber-50">
+    <div class="flex justify-between items-center max-w-xl mx-auto mb-4">
+      <div class="w-32 bg-slate-200 h-4 rounded-full overflow-hidden border border-slate-400">
+      </div>
+    </div>
+
+    <div *ngIf="!shapesCompleted" class="text-center">
+      <div class="bg-white p-6 rounded-2xl border-2 border-slate-800 inline-block max-w-md w-full shadow-md mx-auto">
+        <div class="grid grid-cols-3 gap-4">
+          <button *ngFor="let item of shapesChoices" (click)="checkShape(item.key)" class="shape-btn">
+            <img [src]="item.image" [alt]="item.name" class="shape-img" />
+            <span class="font-bold text-xs text-slate-800 mt-2 block">{{ item.name }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="shapesCompleted" class="success-screen">
+      <div class="text-6xl mb-2">🏆</div>
+      <h3 class="text-2xl font-bold text-emerald-800">¡Reto de Formas Geometricas Superado!</h3>
+      <button (click)="reiniciarSeccion('shapes')" class="btn-restart">Jugar de Nuevo 🔄</button>
+    </div>
+
+    <p *ngIf="shapesFeedback" class="font-bold text-emerald-600 text-base mt-4 text-center">{{ shapesFeedback }}</p>
+  </div>
+</div>

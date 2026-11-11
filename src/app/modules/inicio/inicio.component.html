@@ -1,0 +1,17 @@
+<section class="dashboard-container">
+  <div class="welcome-banner">
+    <h2>¡Hola, {{ auth.nombreUsuario() }}! 👋</h2>
+    <p>Bienvenido a Pequemundo. Elige un módulo para empezar a aprender y divertirte.</p>
+  </div>
+
+  <div class="modules-grid">
+    @for (m of modulos; track m.ruta) {
+      <article class="module-card">
+        <div class="module-icon">{{ m.icono }}</div>
+        <h3>{{ m.titulo }}</h3>
+        <p>{{ m.descripcion }}</p>
+        <a class="btn-module" [routerLink]="m.ruta">{{ m.boton }}</a>
+      </article>
+    }
+  </div>
+</section>

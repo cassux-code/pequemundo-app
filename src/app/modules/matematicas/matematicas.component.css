@@ -1,0 +1,324 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  width: 100%;
+}
+
+/* Contenedor principal adaptable */
+.math-module-container {
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
+  color: #1e293b;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Botón volver */
+.volver {
+  background-color: transparent; 
+  border: transparent;  
+  color: #0284c7;             
+  padding: 0.5rem 1rem;
+  border-radius: 8px;         
+  font-weight: 600;        
+}
+
+.volver:hover {
+  background-color: #f0f9ff;
+}
+
+.flex.flex-wrap.gap-2 {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* Pestañas flexibles */
+.math-tab-btn {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 2px solid #0f172a;
+  padding: 0.6rem 1.2rem;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15);
+  transition: all 0.1s ease;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.math-tab-btn.active-tab {
+  background: #0284c7;
+  color: #fff;
+  border-color: #0284c7;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0px rgba(0, 0, 0, 0.15);
+}
+
+/* Tarjeta contenedora */
+.math-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Cuadrícula de Formas Geométricas (Responsive CSS Grid) */
+.math-card.bg-amber-50 .grid-cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  justify-items: center;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Botones de formas */
+.shape-btn {
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  padding: 1rem 0.5rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  width: 100%;
+  min-height: 130px;
+}
+
+.shape-btn:hover {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(245, 158, 11, 0.2);
+}
+
+.shape-btn:active {
+  transform: translateY(0px);
+}
+
+.shape-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Caja de Conteo (Estrellas) */
+.counting-box {
+  background: #fffbeb;
+  border: 3px dashed #f59e0b;
+  border-radius: 20px;
+  padding: 2rem;
+  min-height: 180px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 6px 15px rgba(245, 158, 11, 0.1);
+}
+
+.counting-box span {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
+}
+
+/* Caja de Sumas (Manzanas) */
+.sum-box {
+  background: #fffbeb;
+  border: 3px solid #f59e0b;
+  border-radius: 20px;
+  padding: 1.5rem 2rem;
+  max-width: 550px;
+  margin: 0 auto 2rem auto;
+  margin-top:2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  box-shadow: 0 6px 15px rgba(245, 158, 11, 0.1);
+}
+
+.sum-box div[class*="flex flex-wrap"] {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 130px;
+  justify-content: center;
+  align-content: center;
+  gap: 0.4rem;
+}
+
+.sum-box span {
+  font-size: 2.2rem;
+}
+
+/* Contenedores de botones de selección (Números) */
+.math-card div:has(> .btn-choice),
+.math-card div:has(> .btn-sum-choice) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Botones de opción numérica */
+.btn-choice {
+  background: #fde047;
+  color: #78350f;
+  border: 2px solid #0f172a;
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 0px #ca8a04;
+  transition: all 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-sum-choice {
+  background: #10b981;
+  color: #ffffff;
+  border: 2px solid #0f172a;
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 5px 0px #047857;
+  transition: all 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-choice:active, .btn-sum-choice:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0px #ca8a04;
+}
+
+/* Pantalla de éxito */
+.success-screen {
+  text-align: center;
+  background: #ecfdf5;
+  border: 3px dashed #10b981;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.btn-restart {
+  margin-top: 1rem;
+  background-color: #10b981;
+  color: white;
+  border: 2px solid #0f172a;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 0px #047857;
+}
+
+.btn-restart:hover {
+  background-color: #059669;
+}
+
+/* =========================================================
+   MEDIA QUERIES ESTÁNDAR PARA RESPONSIVE (Tablets y Celulares)
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+  .math-module-container {
+    padding: 1.25rem;
+  }
+
+  .math-card {
+    padding: 1.25rem;
+  }
+
+  .counting-box {
+    padding: 1.5rem 1rem;
+    min-height: 150px;
+  }
+
+  .sum-box {
+    padding: 1rem;
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .math-module-container {
+    padding: 0.75rem;
+    border-radius: 16px;
+  }
+
+  .math-card {
+    padding: 1rem 0.5rem;
+    border-radius: 16px;
+  }
+
+  .math-card ~ div, .flex.flex-wrap.gap-2 {
+    gap: 0.5rem;
+  }
+
+  .math-tab-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    flex: 1 1 100%;
+  }
+
+  .shape-btn {
+    min-height: 105px;
+    padding: 0.5rem 0.2rem;
+  }
+
+  .shape-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .counting-box span {
+    font-size: 2.5rem;
+  }
+
+  .sum-box {
+    font-size: 1.6rem;
+    gap: 0.75rem;
+  }
+
+  .sum-box span {
+    font-size: 1.6rem;
+  }
+
+  .btn-choice, .btn-sum-choice {
+    width: 55px;
+    height: 55px;
+    font-size: 1.4rem;
+  }
+}
