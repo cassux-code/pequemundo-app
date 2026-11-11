@@ -1,0 +1,179 @@
+<section class="logros">
+
+  <header class="encabezado no-print">
+    <div>
+      <h2>📊 Logros y Reportes</h2>
+      <p>Mira cuántas estrellas has ganado, tus insignias y el avance de aprendizaje.</p>
+    </div>
+    <a routerLink="/inicio" class="volver">← Volver al inicio</a>
+  </header>
+
+  <nav class="tabs no-print" aria-label="Secciones de logros">
+    <button [class.activa]="pestana() === 'metricas'" (click)="cambiar('metricas')">📈 Mis Estadísticas</button>
+    <button [class.activa]="pestana() === 'insignias'" (click)="cambiar('insignias')">
+      🏅 Álbum de Insignias
+      <span class="contador">{{ progreso.desbloqueadas() }}/{{ progreso.insignias().length }}</span>
+    </button>
+    @if (puedeVerReporte()) {
+      <button [class.activa]="pestana() === 'reporte'" (click)="cambiar('reporte')">📄 Reporte de Desempeño</button>
+    }
+  </nav>
+
+  <!-- ============ PANEL DE MÉTRICAS ============ -->
+  @if (pestana() === 'metricas') {
+    <div class="kpis">
+      <article class="kpi kpi-estrellas">
+        <span class="kpi-icono">⭐</span>
+        <strong>{{ progreso.estrellas() }}</strong>
+        <small>Estrellas acumuladas</small>
+      </article>
+      <article class="kpi kpi-tiempo">
+        <span class="kpi-icono">⏱️</span>
+        <strong>{{ progreso.formatearTiempo(progreso.minutos()) }}</strong>
+        <small>Tiempo de juego</small>
+      </article>
+      <article class="kpi kpi-precision">
+        <span class="kpi-icono">🎯</span>
+        <strong>{{ progreso.precision() }}%</strong>
+        <small>Porcentaje de precisión</small>
+      </article>
+      <article class="kpi kpi-act">
+        <span class="kpi-icono">🎮</span>
+        <strong>{{ progreso.actividades() }}</strong>
+        <small>Actividades completadas</small>
+      </article>
+    </div>
+
+    <div class="paneles">
+      <article class="panel">
+        <h3>Tiempo de juego esta semana</h3>
+        <div class="barras" role="img" aria-label="Minutos jugados por día">
+          @for (d of progreso.minutosSemana(); track d.fecha) {
+            <div class="barra-col">
+              <span class="barra-valor">{{ d.minutos }}</span>
+              <div class="barra" [style.height.%]="(d.minutos / maxMinutos()) * 100"></div>
+              <span class="barra-dia">{{ d.etiqueta }}</span>
+            </div>
+          }
+        </div>
+      </article>
+
+      <article class="panel panel-precision">
+        <h3>Precisión general</h3>
+        <div class="donut" [style.background]="donut()">
+          <div class="donut-centro">
+            <strong>{{ progreso.precision() }}%</strong>
+            <small>{{ nivelPrecision(progreso.precision()) }}</small>
+          </div>
+        </div>
+        <p class="nota">{{ progreso.aciertos() }} aciertos de {{ progreso.intentos() }} intentos</p>
+      </article>
+    </div>
+
+    <article class="panel">
+      <h3>Avance por módulo</h3>
+      <div class="modulos-lista">
+        @for (m of progreso.resumenModulos(); track m.modulo) {
+          <div class="modulo-fila">
+            <span class="modulo-nombre">{{ m.icono }} {{ m.modulo }}</span>
+            <div class="progreso"><div class="progreso-fill" [style.width.%]="m.precision"></div></div>
+            <span class="modulo-datos">{{ m.precision }}% · {{ m.estrellas }} ⭐ · {{ m.minutos }} min</span>
+          </div>
+        }
+      </div>
+    </article>
+  }
+
+  <!-- ============ ÁLBUM DE INSIGNIAS ============ -->
+  @if (pestana() === 'insignias') {
+    <article class="panel">
+      <h3>Tu colección: {{ progreso.desbloqueadas() }} de {{ progreso.insignias().length }} insignias</h3>
+      <div class="progreso grande">
+        <div class="progreso-fill dorado" [style.width.%]="(progreso.desbloqueadas() / progreso.insignias().length) * 100"></div>
+      </div>
+    </article>
+
+    <div class="album">
+      @for (i of progreso.insignias(); track i.id) {
+        <article class="insignia" [class.bloqueada]="!i.desbloqueada">
+          <div class="medalla">
+            <span class="medalla-icono">{{ i.desbloqueada ? i.icono : '🔒' }}</span>
+          </div>
+          <h4>{{ i.nombre }}</h4>
+          <p>{{ i.descripcion }}</p>
+          @if (i.desbloqueada) {
+            <span class="estado ok">✅ ¡Desbloqueada!</span>
+          } @else {
+            <div class="progreso"><div class="progreso-fill" [style.width.%]="i.porcentaje"></div></div>
+            <span class="estado">{{ i.porcentaje }}% completado</span>
+          }
+        </article>
+      }
+    </div>
+  }
+
+  <!-- ============ REPORTE PARA PADRES Y MAESTROS ============ -->
+  @if (pestana() === 'reporte' && puedeVerReporte()) {
+    <div class="acciones no-print">
+      <button class="btn btn-pdf" (click)="exportarPDF()">🖨️ Exportar PDF / Imprimir</button>
+      <button class="btn btn-excel" (click)="exportarExcel()">📗 Exportar Excel</button>
+    </div>
+
+    <article class="reporte" id="reporte-imprimible">
+      <header class="reporte-cab">
+        <h2>PequeMundo · Reporte de Desempeño</h2>
+        <p>Generado por <strong>{{ auth.nombreUsuario() }}</strong> ({{ auth.rolUsuario() }}) · {{ hoy | date:'dd/MM/yyyy' }}</p>
+      </header>
+
+      <h3>Resumen general</h3>
+      <table>
+        <tbody>
+          <tr><th>Estrellas acumuladas</th><td>{{ progreso.estrellas() }}</td></tr>
+          <tr><th>Tiempo de juego</th><td>{{ progreso.formatearTiempo(progreso.minutos()) }}</td></tr>
+          <tr><th>Precisión</th><td>{{ progreso.precision() }}% ({{ nivelPrecision(progreso.precision()) }})</td></tr>
+          <tr><th>Actividades completadas</th><td>{{ progreso.actividades() }}</td></tr>
+          <tr><th>Insignias desbloqueadas</th><td>{{ progreso.desbloqueadas() }} de {{ progreso.insignias().length }}</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Resumen por módulo</h3>
+      <table>
+        <thead>
+          <tr><th>Módulo</th><th>Aciertos</th><th>Intentos</th><th>Precisión</th><th>Minutos</th><th>Estrellas</th></tr>
+        </thead>
+        <tbody>
+          @for (m of progreso.resumenModulos(); track m.modulo) {
+            <tr>
+              <td>{{ m.icono }} {{ m.modulo }}</td>
+              <td>{{ m.aciertos }}</td><td>{{ m.intentos }}</td>
+              <td>{{ m.precision }}%</td><td>{{ m.minutos }}</td><td>{{ m.estrellas }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <h3>Detalle de actividades</h3>
+      <table>
+        <thead>
+          <tr><th>Fecha</th><th>Módulo</th><th>Actividad</th><th>Aciertos</th><th>Min.</th><th>⭐</th></tr>
+        </thead>
+        <tbody>
+          @for (r of progreso.registros(); track $index) {
+            <tr>
+              <td>{{ r.fecha }}</td><td>{{ r.modulo }}</td><td>{{ r.actividad }}</td>
+              <td>{{ r.aciertos }}/{{ r.intentos }}</td><td>{{ r.minutos }}</td><td>{{ r.estrellas }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <h3>Insignias obtenidas</h3>
+      <p class="lista-ins">
+        @for (i of progreso.insignias(); track i.id) {
+          @if (i.desbloqueada) { <span class="chip">{{ i.icono }} {{ i.nombre }}</span> }
+        }
+      </p>
+    </article>
+  }
+
+</section>
