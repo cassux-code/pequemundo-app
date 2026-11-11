@@ -1,0 +1,80 @@
+:host {
+  display: block;
+}
+
+.flash-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.flash-chip {
+  min-height: 48px;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--vocab-color-borde, #1e1b4b);
+  border-radius: 999px;
+  background: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.flash-chip-activo {
+  background: var(--vocab-color-primario, #7c3aed);
+  color: #ffffff;
+  border-color: var(--vocab-color-primario, #7c3aed);
+}
+
+.flash-chip:focus-visible {
+  outline: 3px solid var(--vocab-color-foco, #fbbf24);
+  outline-offset: 2px;
+}
+
+.flash-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* El componente hijo no tiene ancho propio dentro del flex: se fija aquí
+   para que no se encoja/expanda y termine solapando los botones de navegación. */
+app-tarjeta-flashcard {
+  display: flex;
+  justify-content: center;
+  flex: 0 1 280px;
+  min-width: 0;
+}
+
+.flash-nav {
+  min-width: 64px;
+  min-height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--vocab-color-borde, #1e1b4b);
+  background: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  flex: 0 0 auto;
+  margin: 0 0.5rem;
+}
+
+.flash-nav:focus-visible {
+  outline: 3px solid var(--vocab-color-foco, #fbbf24);
+  outline-offset: 2px;
+}
+
+.flash-contador {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 700;
+  color: var(--vocab-color-texto, #1e1b4b);
+}
+
+@media screen and (max-width: 480px) {
+  .flash-nav {
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 1.2rem;
+  }
+}

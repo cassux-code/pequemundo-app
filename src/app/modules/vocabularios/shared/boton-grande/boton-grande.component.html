@@ -1,0 +1,13 @@
+<button
+  type="button"
+  class="btn-grande"
+  [class.btn-exito]="variante === 'exito'"
+  [class.btn-alerta]="variante === 'alerta'"
+  [class.btn-neutro]="variante === 'neutro'"
+  [disabled]="deshabilitado"
+  [attr.aria-label]="ariaLabel || texto"
+  (click)="onClick()"
+>
+  <span *ngIf="icono" class="btn-grande-icono" aria-hidden="true">{{ icono }}</span>
+  <span class="btn-grande-texto">{{ texto }}</span>
+</button>

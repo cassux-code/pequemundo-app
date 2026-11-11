@@ -1,0 +1,187 @@
+/*
+ * Tokens de diseño del módulo Vocabulario, definidos en :host para que
+ * se hereden por CSS custom properties hacia todos los componentes hijos
+ * (abecedario, flashcards, juegos, panel docente, shared/*), sin tocar
+ * los estilos globales del proyecto (src/styles.css permanece intacto).
+ */
+:host {
+  display: block;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  width: 100%;
+
+  --vocab-color-primario: #7c3aed;
+  --vocab-color-primario-sombra: #5b21b6;
+  --vocab-color-secundario: #fb923c;
+  --vocab-color-exito: #10b981;
+  --vocab-color-alerta: #ef4444;
+  --vocab-color-texto: #1e1b4b;
+  --vocab-color-borde: #1e1b4b;
+  --vocab-color-superficie: #fff7ed;
+  --vocab-color-foco: #fbbf24;
+  --vocab-radio: 20px;
+}
+
+.vocab-module-container {
+  background: linear-gradient(135deg, #f5f3ff 0%, #fff7ed 100%);
+  border: 4px solid var(--vocab-color-primario);
+  border-radius: var(--vocab-radio);
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.12);
+  color: var(--vocab-color-texto);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.vocab-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 2px solid #e9d5ff;
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.vocab-titulo {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.vocab-subtitulo {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: #6d28d9;
+}
+
+.vocab-controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.vocab-control-voz {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.vocab-chip-toggle {
+  min-height: 48px;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--vocab-color-borde);
+  border-radius: 14px;
+  background: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.vocab-chip-toggle:focus-visible,
+.vocab-control-voz select:focus-visible {
+  outline: 3px solid var(--vocab-color-foco);
+  outline-offset: 2px;
+}
+
+.vocab-tabs-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Control y libertad del usuario (Nielsen #3): botón grande y siempre visible */
+.vocab-volver-btn {
+  min-height: 56px;
+  background-color: #ffffff;
+  border: 2px solid var(--vocab-color-borde);
+  padding: 0.6rem 1.2rem;
+  border-radius: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.vocab-volver-btn:focus-visible {
+  outline: 3px solid var(--vocab-color-foco);
+  outline-offset: 2px;
+}
+
+.vocab-tabs {
+  flex: 1 1 auto;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.vocab-tab-btn {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  color: var(--vocab-color-texto);
+}
+
+.vocab-tab-btn.active {
+  background-color: var(--vocab-color-primario) !important;
+  color: #ffffff !important;
+}
+
+.vocab-contenido {
+  background: #ffffff;
+  border-radius: var(--vocab-radio);
+  padding: 1.5rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Respeta la preferencia del sistema y además permite desactivarlo manualmente */
+@media (prefers-reduced-motion: reduce) {
+  .vocab-module-container * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.vocab-reducir-movimiento * {
+  transition: none !important;
+  animation: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  .vocab-module-container {
+    padding: 1.25rem;
+  }
+
+  .vocab-contenido {
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .vocab-module-container {
+    padding: 0.75rem;
+    border-radius: 16px;
+  }
+
+  .vocab-titulo {
+    font-size: 1.3rem;
+  }
+
+  .vocab-tabs-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vocab-volver-btn {
+    width: 100%;
+  }
+
+  .vocab-tab-btn {
+    flex: 1 1 100%;
+  }
+}

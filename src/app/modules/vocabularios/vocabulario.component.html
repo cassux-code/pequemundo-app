@@ -1,0 +1,59 @@
+<div class="vocab-module-container" [class.vocab-reducir-movimiento]="reducirMovimiento">
+  <!-- BARRA SUPERIOR: título + controles de accesibilidad (Nielsen #7) -->
+  <div class="vocab-topbar">
+    <div>
+      <h2 class="vocab-titulo">📚 Módulo: Vocabulario y Lectoescritura</h2>
+      <p class="vocab-subtitulo">Letras, sonidos y palabras a través del juego</p>
+    </div>
+
+    <div class="vocab-controles" role="group" aria-label="Preferencias de accesibilidad">
+      <label class="vocab-control-voz">
+        🔊 Velocidad voz
+        <select (change)="cambiarVelocidadVoz($any($event.target).value)" class="form-select form-select-sm">
+          <option value="0.7">Lenta</option>
+          <option value="0.95" selected>Normal</option>
+          <option value="1.2">Rápida</option>
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="vocab-chip-toggle"
+        [attr.aria-pressed]="reducirMovimiento"
+        (click)="toggleReducirMovimiento()"
+      >
+        🎞️ {{ reducirMovimiento ? 'Animaciones: Off' : 'Animaciones: On' }}
+      </button>
+
+      <button type="button" class="vocab-chip-toggle" (click)="toggleModoDocente()">
+        {{ modoDocente ? '🧒 Volver a modo niño' : '👩‍🏫 Panel Docente' }}
+      </button>
+    </div>
+  </div>
+
+  <app-mascota-guia [mensaje]="mensajeBienvenida" (escuchar)="repetirBienvenida()"></app-mascota-guia>
+
+  <!-- Control y libertad del usuario (Nielsen #3): volver siempre visible -->
+  <div class="vocab-tabs-row">
+    <button type="button" class="vocab-volver-btn" (click)="onVolverMenu()">🏠 Menú Principal</button>
+
+    <nav class="nav nav-pills vocab-tabs" *ngIf="!modoDocente" role="tablist" aria-label="Secciones del módulo">
+      <button type="button" class="nav-link vocab-tab-btn" [class.active]="tabActiva === 'abecedario'" (click)="cambiarTab('abecedario')">
+        🔡 Abecedario
+      </button>
+      <button type="button" class="nav-link vocab-tab-btn" [class.active]="tabActiva === 'flashcards'" (click)="cambiarTab('flashcards')">
+        🃏 Flashcards
+      </button>
+      <button type="button" class="nav-link vocab-tab-btn" [class.active]="tabActiva === 'juegos'" (click)="cambiarTab('juegos')">
+        🎮 Juegos
+      </button>
+    </nav>
+  </div>
+
+  <div class="vocab-contenido">
+    <app-abecedario *ngIf="tabActiva === 'abecedario' && !modoDocente"></app-abecedario>
+    <app-flashcards *ngIf="tabActiva === 'flashcards' && !modoDocente"></app-flashcards>
+    <app-juegos *ngIf="tabActiva === 'juegos' && !modoDocente"></app-juegos>
+    <app-panel-docente *ngIf="modoDocente"></app-panel-docente>
+  </div>
+</div>
