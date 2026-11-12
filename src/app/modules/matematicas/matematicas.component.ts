@@ -135,11 +135,12 @@ export class MatematicasComponent implements OnInit {
         this.speak('¡Excelente! Has completado todas las sumas.');
       } else {
         this.generateSumsGame();
-        this.speak(`¡Muy bien! Llevas ${this.sumsScore} arciertos. ¿Cuánto es ${this.numA} más ${this.numB} manzanas?`);
+        const palabraAcierto = this.sumsScore === 1 ? 'acierto' : 'aciertos';
+        this.speak(`¡Muy bien! Llevas ${this.sumsScore} ${palabraAcierto}. ¿Cuánto es ${this.numA} más ${this.numB} manzanas?`);
       }
     } else {
-      this.sumFeedback = '❌ Inténtalo otra vez. Suma todas las manzanas.';
-      this.speak('Inténtalo otra vez.');
+      //this.sumFeedback = 'Inténtalo otra vez. Suma todas las manzanas.';
+      this.speak(`Inténtalo otra vez. ¿Cuánto es ${this.numA} más ${this.numB} manzanas?`);
     }
   }
 
@@ -182,13 +183,14 @@ export class MatematicasComponent implements OnInit {
         this.countCompleted = true;
         this.speak('¡Felicidades! Has completado el juego de conteo.');
       } else {
-        this.countingFeedback = `✅ ¡Correcto! (${this.countScore}/10) ⭐`;
+        //this.countingFeedback = `¡Correcto! (${this.countScore}/10) ⭐`;
         this.generateCountingGame();
-        this.speak(`¡Muy bien! Llevas ${this.countScore} aciertos. ¿Cuántas estrellas hay ahora?`);
+        const palabraAcierto = this.countScore === 1 ? 'acierto' : 'aciertos';
+        this.speak(`¡Muy bien! Llevas ${this.countScore} ${palabraAcierto}. ¿Cuántas estrellas hay ahora?`);
       }
     } else {
-      this.countingFeedback = '❌ Inténtalo de nuevo, ¡cuenta con cuidado!';
-      this.speak('Inténtalo de nuevo. ¡cuenta con cuidado!');
+      //this.countingFeedback = 'Inténtalo de nuevo, ¡cuenta con cuidado!';
+      this.speak(`Inténtalo de nuevo. ¡cuenta con cuidado! ¿Cuántas estrellas hay?`);
     }
   }
 
@@ -240,14 +242,16 @@ export class MatematicasComponent implements OnInit {
         this.shapesCompleted = true;
         this.speak('¡Increíble! Has dominado las formas geométricas.');
       } else {
-        this.shapesFeedback = `✅ ¡Genial! (${this.shapesScore}/10) 🔴`;
+        //this.shapesFeedback = `¡Genial! (${this.shapesScore}/10) 🔴`;
         this.generateShapesGame();
-        this.speak(`¡Correcto! Llevas ${this.shapesScore}`);
+        const palabraAcierto = this.shapesScore === 1 ? 'acierto' : 'aciertos';
+        this.speak(`¡Correcto! Llevas ${this.shapesScore} ${palabraAcierto}. Ahora, toca el ${this.targetShape.name}`);
       }
     } else {
-      this.speak('Esa no es la forma. ¡Inténtalo otra vez!');
+      this.speak(`Esa no es la forma. ¡Inténtalo otra vez!. toca el ${this.targetShape.name}`);
     }
   }
+
 
 
   // ==========================================
